@@ -3,7 +3,7 @@ import axios from 'axios'
 // ─── Axios Instance ───────────────────────────────────────────────────────────
 
 const api = axios.create({
-  baseURL: '/api/v1',       // Proxied to http://localhost:5000 via Vite proxy
+  baseURL: '/api/v1',       // Proxied to https://blood-connector-backend.onrender.com via Vite proxy
   withCredentials: true,    // Include cookies for HTTP-only tokens
   headers: {
     'Content-Type': 'application/json',

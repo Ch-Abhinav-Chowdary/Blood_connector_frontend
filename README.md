@@ -181,7 +181,7 @@ server: {
   port: 5173,
   proxy: {
     '/api': {
-      target: 'http://localhost:5000',
+      target: 'https://blood-connector-backend.onrender.com',
       changeOrigin: true,
       secure: false,
     },
@@ -190,7 +190,7 @@ server: {
 ```
 
 ### Run Commands
-Make sure the backend is running on `http://localhost:5000`.
+Make sure the backend is running on `https://blood-connector-backend.onrender.com` (or locally if configured).
 
 ```bash
 # Navigate to the frontend directory
