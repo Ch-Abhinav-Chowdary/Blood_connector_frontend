@@ -29,10 +29,8 @@ export const SocketProvider = ({ children }) => {
       return
     }
 
-    // Determine backend URL (proxy handles /api, but we connect directly for WebSockets in development)
-    const socketUrl = window.location.hostname === 'localhost' 
-      ? 'https://blood-connector-backend.onrender.com' 
-      : window.location.origin
+    // Connect directly to the Render backend for WebSockets in all environments
+    const socketUrl = 'https://blood-connector-backend.onrender.com'
 
     const newSocket = io(socketUrl, {
       withCredentials: true,
