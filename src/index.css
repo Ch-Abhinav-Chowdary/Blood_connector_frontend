@@ -1,0 +1,527 @@
+/* ─── Google Fonts ──────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+@import "leaflet/dist/leaflet.css";
+@import "tailwindcss";
+
+/* ─── CSS Custom Properties (Design Tokens) ──────────────────────────────────── */
+:root {
+  /* Brand Colors */
+  --color-blood:       #E8323C;
+  --color-blood-dark:  #C0272F;
+  --color-blood-light: #FF6B6B;
+
+  /* Neutrals */
+  --color-bg:          #0A0A0F;
+  --color-surface:     #111118;
+  --color-surface-2:   #1A1A24;
+  --color-surface-3:   #222232;
+  --color-border:      rgba(255,255,255,0.08);
+  --color-border-hover:rgba(255,255,255,0.16);
+
+  /* Text */
+  --color-text-primary:   #F0F0F5;
+  --color-text-secondary: #9090A8;
+  --color-text-muted:     #5A5A72;
+
+  /* Status */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error:   #EF4444;
+  --color-info:    #3B82F6;
+
+  /* Urgency */
+  --color-critical: #FF3366;
+  --color-urgent:   #F59E0B;
+  --color-normal:   #3B82F6;
+
+  /* Gradients */
+  --gradient-brand:  linear-gradient(135deg, #E8323C 0%, #FF6B6B 100%);
+  --gradient-dark:   linear-gradient(180deg, #111118 0%, #0A0A0F 100%);
+  --gradient-hero:   linear-gradient(135deg, #1A0A0B 0%, #0A0A0F 50%, #0A0F1A 100%);
+  --gradient-glass:  linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+
+  /* Shadows */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:    0 8px 32px rgba(0,0,0,0.6);
+  --shadow-brand: 0 0 32px rgba(232,50,60,0.25);
+  --shadow-glow:  0 0 60px rgba(232,50,60,0.15);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast:   all 0.15s ease;
+  --transition-normal: all 0.25s ease;
+  --transition-slow:   all 0.4s ease;
+
+  /* Font */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Z-index layers */
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-modal:    300;
+  --z-toast:    400;
+}
+
+/* ─── Base Reset & Typography ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+input, button, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-surface-3); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-blood-dark); }
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(232, 50, 60, 0.3);
+  color: var(--color-text-primary);
+}
+
+/* ─── Utility Classes ─────────────────────────────────────────────────────── */
+
+/* Glass Card */
+.glass-card {
+  background: var(--gradient-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-normal);
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Surface Card */
+.surface-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-normal);
+}
+
+.surface-card:hover {
+  border-color: var(--color-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Brand Button */
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--gradient-brand);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--radius-full);
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-brand);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.btn-brand:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(232,50,60,0.4);
+  filter: brightness(1.1);
+}
+
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+/* Outline Button */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 28px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-full);
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-outline:hover {
+  border-color: var(--color-blood);
+  color: var(--color-blood-light);
+  background: rgba(232,50,60,0.08);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+}
+
+/* Form Input */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  transition: var(--transition-fast);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.form-input:focus {
+  border-color: var(--color-blood);
+  box-shadow: 0 0 0 3px rgba(232,50,60,0.15);
+}
+
+.form-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Form Label */
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Form Select */
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  transition: var(--transition-fast);
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  border-color: var(--color-blood);
+  box-shadow: 0 0 0 3px rgba(232,50,60,0.15);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.badge-blood {
+  background: rgba(232,50,60,0.15);
+  color: var(--color-blood-light);
+  border: 1px solid rgba(232,50,60,0.25);
+}
+
+.badge-critical {
+  background: rgba(255,51,102,0.15);
+  color: #FF6699;
+  border: 1px solid rgba(255,51,102,0.25);
+}
+
+.badge-urgent {
+  background: rgba(245,158,11,0.15);
+  color: #FCD34D;
+  border: 1px solid rgba(245,158,11,0.25);
+}
+
+.badge-normal {
+  background: rgba(59,130,246,0.15);
+  color: #93C5FD;
+  border: 1px solid rgba(59,130,246,0.25);
+}
+
+.badge-success {
+  background: rgba(34,197,94,0.15);
+  color: #86EFAC;
+  border: 1px solid rgba(34,197,94,0.25);
+}
+
+.badge-pending {
+  background: rgba(245,158,11,0.15);
+  color: #FCD34D;
+  border: 1px solid rgba(245,158,11,0.25);
+}
+
+.badge-accepted {
+  background: rgba(59,130,246,0.15);
+  color: #93C5FD;
+  border: 1px solid rgba(59,130,246,0.25);
+}
+
+.badge-completed {
+  background: rgba(34,197,94,0.15);
+  color: #86EFAC;
+  border: 1px solid rgba(34,197,94,0.25);
+}
+
+.badge-cancelled {
+  background: rgba(100,100,120,0.15);
+  color: var(--color-text-muted);
+  border: 1px solid rgba(100,100,120,0.25);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 24px 0;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Section spacing */
+.section { padding: 80px 0; }
+.section-sm { padding: 48px 0; }
+
+/* Gradient text */
+.gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effect */
+.brand-glow { box-shadow: var(--shadow-brand); }
+.brand-glow-lg { box-shadow: var(--shadow-glow); }
+
+/* Loading skeleton */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.skeleton {
+  background: var(--color-surface-3);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Pulse animation for urgent items */
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,50,60,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(232,50,60,0); }
+}
+
+.urgent-pulse {
+  animation: urgentPulse 2s ease-in-out infinite;
+}
+
+/* Page layout helpers */
+.page-wrapper {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-hero);
+  padding: 24px;
+}
+
+/* Responsive grid */
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+/* Error text */
+.error-text {
+  color: var(--color-error);
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Leaflet Map Dark Theme Overrides ─────────────────────────────────────── */
+.map-container {
+  height: 100%;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.leaflet-container {
+  background: var(--color-bg) !important;
+  font-family: var(--font-body) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-surface-2) !important;
+  color: var(--color-text-primary) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 6px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--color-surface-2) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.leaflet-popup-content h4 {
+  font-family: var(--font-heading) !important;
+  color: var(--color-text-primary) !important;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.leaflet-popup-close-button {
+  color: var(--color-text-muted) !important;
+  padding: 8px !important;
+}
+
+.leaflet-bar {
+  border: 1px solid var(--color-border) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.leaflet-bar a {
+  background-color: var(--color-surface-2) !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  transition: var(--transition-fast) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--color-surface-3) !important;
+  color: var(--color-blood-light) !important;
+}
